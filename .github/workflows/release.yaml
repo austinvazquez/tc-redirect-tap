@@ -20,12 +20,15 @@ jobs:
         run: make deps
 
       - name: Build
-        run: make all
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o bin/tc-redirect-tap-amd64 ./cmd/tc-redirect-tap
+          GOOS=linux GOARCH=arm64 go build -o bin/tc-redirect-tap-arm64 ./cmd/tc-redirect-tap
 
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            tc-redirect-tap
+            bin/tc-redirect-tap-amd64
+            bin/tc-redirect-tap-arm64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
